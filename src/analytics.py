@@ -39,7 +39,11 @@ LIMIT 5;
 # instead of being skipped by LAG().
 MOM_REVENUE_BY_CATEGORY = """
 WITH months AS (
-    SELECT DISTINCT year_month FROM dim_date
+    SELECT year_month,
+           COUNT(*) AS days_in_data,
+           CASE WHEN COUNT(*) < 28 THEN 1 ELSE 0 END AS is_partial_month
+    FROM dim_date
+    GROUP BY year_month
 ),
 categories AS (
     SELECT DISTINCT category FROM dim_product
@@ -52,13 +56,16 @@ monthly AS (
     GROUP BY p.category, d.year_month
 ),
 grid AS (
-    SELECT c.category, m.year_month, COALESCE(mo.revenue, 0) AS revenue
+    SELECT c.category, m.year_month, m.days_in_data, m.is_partial_month,
+           COALESCE(mo.revenue, 0) AS revenue
     FROM categories c
     CROSS JOIN months m
     LEFT JOIN monthly mo ON mo.category = c.category AND mo.year_month = m.year_month
 )
 SELECT category,
        year_month,
+       days_in_data,
+       is_partial_month,
        ROUND(revenue, 2) AS net_revenue,
        ROUND(LAG(revenue) OVER w, 2) AS prev_month_revenue,
        CASE WHEN LAG(revenue) OVER w IS NULL OR LAG(revenue) OVER w = 0 THEN NULL
