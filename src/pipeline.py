@@ -73,7 +73,7 @@ def main() -> None:
     log.info("clean    %d issues logged, %d rows quarantined -> output/data_quality_issues.json",
              len(report.issues), len(report.quarantine))
 
-##ENsure that no record is silently dropper, it either kept or quarrantined
+##Ensure that no record is silently dropper, it either kept or quarrantined
     for name, r in reconcile(raw, {"transactions": t, "stores": s, "products": p},
                              report).items():
         log.info("reconcile %-11s raw %4d = kept %4d + quarantined %3d",

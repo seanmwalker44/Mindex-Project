@@ -92,7 +92,7 @@ I tried not to throw data away. If a row would make the numbers wrong, like a du
 
 ### On the seed script
 
-The seed script lists the issues it injects in its docstrings. I didn't realize that until after I'd profiled and explored the data, and by then I'd found the issues in the table above on my own. Reading it afterwards showed me three I'd missed. I fixed those, and they're listed here:
+The seed script lists the issues it injects in its docstrings. I didn't realize that until after I'd profiled and explored the data, and by then I'd found the issues in the table above from profiling.. Reading it afterwards showed me three I'd missed. I fixed those, and they're listed here:
 
 | Issue | File | Count | Decision | Rationale |
 |---|---|---|---|---|
@@ -102,7 +102,7 @@ The seed script lists the issues it injects in its docstrings. I didn't realize 
 
 The extract date (`EXTRACT_DATE` in `cleaner.py`) comes from the seed script.
 
-**On AI use:** I used an AI assistant to help draft and review code. 
+**On AI use:** I used an AI assistant to write and review code. I made the design calls (shared parsers in utils.py, the quarantine table, keeping guests, returns and orphan IDs instead of dropping them, and the incremental/MERGE approach), ran everything locally, and fixed what broke.
 
 ### Profiler notes
 
